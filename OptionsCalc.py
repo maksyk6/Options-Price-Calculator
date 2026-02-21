@@ -35,7 +35,7 @@ if st.button('Calculate'):
 
     st.success('Calculations finished.')
 
-    # Two columns. Results on the left, graph on right
+    # Two columns. Results on the left, graph on the right
     left_results, right_plot = st.columns([1, 2])
 
     with left_results:
@@ -60,28 +60,26 @@ if st.button('Calculate'):
             K_grid, T_grid = np.meshgrid(strike_range, time_range)
 
             # Calculate prices for each combination
-            price_grid = np.zeros_like(K_grid)
+            P_grid = np.zeros_like(K_grid)
             for i in range(len(time_range)):
                 for j in range(len(strike_range)):
-                    d1_temp = (np.log(S / K_grid[i, j]) + (R + sigma ** 2 / 2) * T_grid[i, j]) / (
-                                sigma * np.sqrt(T_grid[i, j]))
+                    d1_temp = (np.log(S / K_grid[i, j]) + (R + sigma ** 2 / 2) * T_grid[i, j]) / (sigma * np.sqrt(T_grid[i, j]))
                     d2_temp = d1_temp - sigma * np.sqrt(T_grid[i, j])
-                    price_grid[i, j] = S * norm.cdf(d1_temp) - K_grid[i, j] * np.exp(-R * T_grid[i, j]) * norm.cdf(
-                        d2_temp)
+                    P_grid[i, j] = S * norm.cdf(d1_temp) - K_grid[i, j] * np.exp(-R * T_grid[i, j]) * norm.cdf(d2_temp)
 
             # Create 3D surface plot
             fig = go.Figure(data=[go.Surface(
                 x=K_grid,
                 y=T_grid,
-                z=price_grid,
+                z=P_grid,
                 colorscale='Viridis'
             )])
 
             fig.update_layout(
                 scene=dict(
-                    xaxis_title='Strike Price (K)',
-                    yaxis_title='Time to Maturity (T)',
-                    zaxis_title='Call Price',
+                    xaxis_title='Strike Price (X)',
+                    yaxis_title='Time to Maturity (Y)',
+                    zaxis_title='Call Price (Z)',
                 ),
                 height=500,
                 margin=dict(l=0, r=0, t=0, b=0)
