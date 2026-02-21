@@ -25,6 +25,7 @@ if st.button('Calculate'):
     d1 = (np.log(S / K) + (R + sigma ** 2 / 2) * T) / (sigma * np.sqrt(T))
     d2 = d1 - sigma * np.sqrt(T)
     call_option_price = S * norm.cdf(d1) - K * np.exp(-R * T) * norm.cdf(d2)
+    put_option_price = call_option_price + K * np.exp(-R * T) - S
 
     delta = np.exp(-R * T) * norm.cdf(d1)
     gamma = np.exp(-R * T) * (norm.cdf(d1) / (sigma * S * np.sqrt(T)))
@@ -40,6 +41,7 @@ if st.button('Calculate'):
     with left_results:
         st.subheader("Results")
         st.metric('Call Option Price', f'{call_option_price:.2f}')
+        st.metric('Put Option Price', f'{put_option_price:.2f}')
         st.metric('Delta', f'{delta:.4f}')
         st.metric('Gamma', f'{gamma:.4f}')
         st.metric('Vega', f'{vega:.4f}')
@@ -89,4 +91,3 @@ if st.button('Calculate'):
 
         except Exception as e:
             st.error(f"Error creating plot: {e}")
-
