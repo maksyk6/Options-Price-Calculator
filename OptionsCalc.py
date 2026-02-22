@@ -5,7 +5,7 @@ from scipy.stats import norm
 import plotly.graph_objects as go
 
 
-st.title("Call Options Price Calculator")
+st.title("Options Price Calculator")
 
 # Input of variables
 st.subheader('Variables')
