@@ -48,18 +48,16 @@ if st.button('Calculate'):
         st.metric('Theta', f'{theta:.4f}')
         st.metric('Rho', f'{rho:.4f}')
 
-    #------------------------------------------------------------------------------
-    #3D plot done with AI, Claude 3.5
     with right_plot:
         st.subheader("Call Price Surface")
 
         try:
-            # Create grid for surface plot
+            # Create grid
             strike_range = np.linspace(S * 0.5, S * 1.5, 30)
             time_range = np.linspace(0.1, 3.0, 30)
             K_grid, T_grid = np.meshgrid(strike_range, time_range)
 
-            # Calculate prices for each combination
+            # Calculate prices
             P_grid = np.zeros_like(K_grid)
             for i in range(len(time_range)):
                 for j in range(len(strike_range)):
@@ -67,7 +65,7 @@ if st.button('Calculate'):
                     d2_temp = d1_temp - sigma * np.sqrt(T_grid[i, j])
                     P_grid[i, j] = S * norm.cdf(d1_temp) - K_grid[i, j] * np.exp(-R * T_grid[i, j]) * norm.cdf(d2_temp)
 
-            # Create 3D surface plot
+            # Create surface plot
             fig = go.Figure(data=[go.Surface(
                 x=K_grid,
                 y=T_grid,
